@@ -140,7 +140,9 @@ var jsonWalker = (function () {
 
         getKeyClassName: function () { return KEY_CLASS_NAME; },
 
-        getSimpleValueClassName: function () { return SIMPLE_VALUE_CLASS_NAME; }
+        getSimpleValueClassName: function () { return SIMPLE_VALUE_CLASS_NAME; },
+
+        getHiddenPlaceholderClassName: function () { return HIDDEN_PLACEHOLDER_CLASS_NAME; }
     };
 
 })();
