@@ -12,8 +12,18 @@ var jsonWalker = (function () {
     var LINE_SHOWING = "- ";
     var LINE_HIDDEN = "+ ";
 
-    function getJsonTree(obj) {
-        return buildLine(undefined, obj, 0, true);
+    function getJsonTree(input) {
+        if (typeof input === 'string' || input instanceof String) {
+            var obj;
+            try {
+                obj = JSON.parse(input);
+            } catch (e) {
+                // If input fails validation due to syntax, do not throw.
+                if (!(e instanceof SyntaxError)) { throw e; }
+            }
+            if (obj) { return buildLine(undefined, obj, 0, true); }
+        }
+        return buildLine(undefined, input, 0, true);
     }
 
     function getLeadingSpacesTextNode(numSpaces) {
