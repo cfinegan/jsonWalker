@@ -12,18 +12,18 @@ var jsonWalker = (function () {
     var LINE_SHOWING = "- ";
     var LINE_HIDDEN = "+ ";
 
+    var SHOW_HIDE_LENGTH = Math.max(LINE_SHOWING.length, LINE_HIDDEN.length);
+
     function getJsonTree(input) {
         if (typeof input === 'string' || input instanceof String) {
-            var obj;
             try {
-                obj = JSON.parse(input);
+                input = JSON.parse(input);
             } catch (e) {
                 // If input fails validation due to syntax, do not throw.
                 if (!(e instanceof SyntaxError)) { throw e; }
             }
-            if (obj) { return buildLine(undefined, obj, 0, true); }
         }
-        return buildLine(undefined, input, 0, true);
+        return buildLine(undefined, input, SHOW_HIDE_LENGTH, true);
     }
 
     function getLeadingSpacesTextNode(numSpaces) {
@@ -42,7 +42,7 @@ var jsonWalker = (function () {
         var valueIsComplex = (typeof value === 'object' && value !== null);
 
         // Hide/show symbol should push out into the left margin.
-        var lineControlLeadingSpaces = numLeadingSpaces - 2;
+        var lineControlLeadingSpaces = numLeadingSpaces - SHOW_HIDE_LENGTH;
 
         // Insert leading spaces for formatting.
         div.appendChild(getLeadingSpacesTextNode(
@@ -107,8 +107,10 @@ var jsonWalker = (function () {
             showHideSpan.addEventListener("click", function () {
                 if (childObjectDiv.style.display === "none") {
                     childObjectDiv.style.display = "block";
+                    showHideSpan.innerText = LINE_SHOWING;
                 } else {
                     childObjectDiv.style.display = "none";
+                    showHideSpan.innerText = LINE_HIDDEN;
                 }
             });
 
